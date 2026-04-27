@@ -7,6 +7,8 @@ import ProtectedBlur from '../components/ProtectedBlur';
 import { fetchWithAuth } from '../utils/fetchWithAuth';
 import './CareerPaths.css';
 
+const API_BASE = `${import.meta.env.VITE_API_BASE_URL}/api`;
+
 const getUserId = (user) => user?.id ?? user?.userId ?? user?.uid ?? null;
 
 const normalizeStringArray = (value) => {
@@ -37,7 +39,7 @@ function CareerPaths() {
   const currentUserId = getUserId(currentUser);
 
   useEffect(() => {
-    fetchWithAuth('http://localhost:8080/api/careers', {}, token)
+    fetchWithAuth(`${API_BASE}/careers`, {}, token)
       .then(res => {
         if (res.status === 401) {
           logout();
@@ -55,7 +57,7 @@ function CareerPaths() {
   useEffect(() => {
     if (!currentUserId) return;
 
-    fetchWithAuth('http://localhost:8080/api/saved-careers', {}, token)
+    fetchWithAuth(`${API_BASE}/saved-careers`, {}, token)
       .then(res => {
         if (res.status === 401) {
           logout();
@@ -88,7 +90,7 @@ function CareerPaths() {
     try {
       if (isSaved(careerId)) {
         const res = await fetchWithAuth(
-          `http://localhost:8080/api/saved-careers/${careerId}`,
+          `${API_BASE}/saved-careers/${careerId}`,
           { method: 'DELETE' },
           token
         );
@@ -107,7 +109,7 @@ function CareerPaths() {
         });
       } else {
         const res = await fetchWithAuth(
-          `http://localhost:8080/api/saved-careers/${careerId}`,
+          `${API_BASE}/saved-careers/${careerId}`,
           { method: 'POST' },
           token
         );

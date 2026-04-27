@@ -5,7 +5,7 @@ import { useTheme } from "../contexts/ThemeContext";
 import { fetchWithAuth } from "../utils/fetchWithAuth";
 import "./Auth.css";
 
-const API_BASE = "http://localhost:8080/api/auth";
+const API_BASE = `${import.meta.env.VITE_API_BASE_URL}/api/auth`;
 
 const initialFormData = {
   name: "",

@@ -4,6 +4,8 @@ import Card from '../components/Card';
 import { fetchWithAuth } from '../utils/fetchWithAuth';
 import './AdminDashboard.css';
 
+const API_BASE = `${import.meta.env.VITE_API_BASE_URL}/api`;
+
 const normalizeStringArray = (value) => {
   if (Array.isArray(value)) {
     return value
@@ -45,7 +47,7 @@ function AdminDashboard() {
     link: ''
   });
   const [deleteId, setDeleteId] = useState(null);
-  const base_URL = 'http://localhost:8080/api/resources';
+  const base_URL = `${API_BASE}/resources`;
 
   const [counsellors, setCounsellors] = useState([]);
   const [showCounsellorModal, setShowCounsellorModal] = useState(false);
@@ -59,7 +61,7 @@ function AdminDashboard() {
     expertise: ''
   });
   const [deleteCounsellorId, setDeleteCounsellorId] = useState(null);
-  const counsellorsBaseUrl = 'http://localhost:8080/api/counsellors';
+  const counsellorsBaseUrl = `${API_BASE}/counsellors`;
 
   const [careerList, setCareerList] = useState([]);
   const [showCareerModal, setShowCareerModal] = useState(false);
@@ -74,10 +76,10 @@ function AdminDashboard() {
   });
   const [deleteCareerId, setDeleteCareerId] = useState(null);
 
-  const careersBaseUrl = 'http://localhost:8080/api/careers';
+  const careersBaseUrl = `${API_BASE}/careers`;
 
   useEffect(() => {
-    fetchWithAuth('http://localhost:8080/api/admin/analytics', {}, token)
+    fetchWithAuth(`${API_BASE}/admin/analytics`, {}, token)
       .then(res => {
         if (res.status === 401) {
           logout();
@@ -105,7 +107,7 @@ function AdminDashboard() {
     const fetchResources = async () => {
      
       try {
-        const res = await fetchWithAuth('http://localhost:8080/api/resources/me', {}, token);
+        const res = await fetchWithAuth(`${API_BASE}/resources/me`, {}, token);
         if (res.status === 401) {
           logout();
           return;
@@ -217,7 +219,7 @@ function AdminDashboard() {
             prev.map(r => (r.id === updated.id ? updated : r))
           );
         } else {
-          const latest = await fetchWithAuth('http://localhost:8080/api/resources/me', {}, token);
+          const latest = await fetchWithAuth(`${API_BASE}/resources/me`, {}, token);
           if (latest.ok) {
             const data = await latest.json();
             setResources(Array.isArray(data) ? data : []);
@@ -243,7 +245,7 @@ function AdminDashboard() {
         if (created?.id != null) {
           setResources(prev => [created, ...prev]);
         } else {
-          const latest = await fetchWithAuth('http://localhost:8080/api/resources/me', {}, token);
+          const latest = await fetchWithAuth(`${API_BASE}/resources/me`, {}, token);
           if (latest.ok) {
             const data = await latest.json();
             setResources(Array.isArray(data) ? data : []);

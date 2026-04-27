@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 
+const API_BASE = `${import.meta.env.VITE_API_BASE_URL}/api`;
+const BACKEND_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 function ProfileModal({ isOpen, onClose }) {
   const { token, currentUser, setCurrentUser } = useAuth();
   const [preview, setPreview] = useState(null);
@@ -48,7 +51,7 @@ function ProfileModal({ isOpen, onClose }) {
       const formData = new FormData();
       formData.append("file", file);
 
-      const response = await fetch("http://localhost:8080/api/profile/upload", {
+      const response = await fetch(`${API_BASE}/profile/upload`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`
@@ -104,7 +107,7 @@ function ProfileModal({ isOpen, onClose }) {
               <img src={preview} alt="Profile preview" className="avatar-img" />
             ) : currentUser?.profileImage ? (
               <img
-                src={`http://localhost:8080${currentUser.profileImage}`}
+                src={`${BACKEND_BASE_URL}${currentUser.profileImage}`}
                 alt={`${currentUser?.name || "User"} profile`}
                 className="avatar-img"
               />

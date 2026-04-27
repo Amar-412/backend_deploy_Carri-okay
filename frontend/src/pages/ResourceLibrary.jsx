@@ -5,6 +5,8 @@ import { useAuth } from '../contexts/AuthContext';
 import { fetchWithAuth } from '../utils/fetchWithAuth';
 import './ResourceLibrary.css';
 
+const API_BASE = `${import.meta.env.VITE_API_BASE_URL}/api`;
+
 const getUserId = (user) => user?.id ?? user?.userId ?? user?.uid ?? null;
 const getSavedResourceId = (item) =>
   item?.resourceId ?? item?.id ?? item?.resource?.id ?? null;
@@ -18,7 +20,7 @@ function ResourceLibrary() {
 
   // Fetch from backend
   useEffect(() => {
-    fetchWithAuth('http://localhost:8080/api/resources', {}, token)
+    fetchWithAuth(`${API_BASE}/resources`, {}, token)
       .then(res => {
         if (res.status === 401) {
           logout();
@@ -36,7 +38,7 @@ function ResourceLibrary() {
   useEffect(() => {
     if (!currentUserId) return;
 
-    fetchWithAuth('http://localhost:8080/api/saved-resources', {}, token)
+    fetchWithAuth(`${API_BASE}/saved-resources`, {}, token)
       .then(res => {
         if (res.status === 401) {
           logout();
@@ -69,7 +71,7 @@ function ResourceLibrary() {
   try {
     if (isSaved(resourceId)) {
       const res = await fetchWithAuth(
-        `http://localhost:8080/api/saved-resources/${resourceId}`,
+        `${API_BASE}/saved-resources/${resourceId}`,
         { method: 'DELETE' },
         token
       );
@@ -89,7 +91,7 @@ function ResourceLibrary() {
 
     } else {
       const res = await fetchWithAuth(
-        `http://localhost:8080/api/saved-resources/${resourceId}`,
+        `${API_BASE}/saved-resources/${resourceId}`,
         { method: 'POST' },
         token
       );

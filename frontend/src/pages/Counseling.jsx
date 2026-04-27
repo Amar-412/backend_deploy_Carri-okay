@@ -9,7 +9,8 @@ import './Counseling.css';
 
 const BOOKING_STEPS = ['date', 'time', 'session', 'confirm'];
 
-const COUNSELLORS_API = 'http://localhost:8080/api/counsellors';
+const API_BASE = `${import.meta.env.VITE_API_BASE_URL}/api`;
+const COUNSELLORS_API = `${API_BASE}/counsellors`;
 const getUserId = (user) => user?.id ?? user?.userId ?? user?.uid ?? null;
 
 function normalizeCounsellorExpertise(raw) {
@@ -97,7 +98,7 @@ function Counseling() {
 
     try {
       const res = await fetchWithAuth(
-        `http://localhost:8080/api/bookings/${counsellorId}`,
+        `${API_BASE}/bookings/${counsellorId}`,
         {
           method: 'POST',
           body: JSON.stringify({

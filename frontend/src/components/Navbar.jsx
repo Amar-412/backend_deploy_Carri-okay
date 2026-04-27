@@ -6,6 +6,8 @@ import UserDrawer from './UserDrawer';
 import ProfileModal from './ProfileModal';
 import './Navbar.css';
 
+const BACKEND_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 function Navbar() {
   const { theme, toggleTheme } = useTheme();
   const { isAuthenticated, isAdmin, currentUser } = useAuth();
@@ -117,7 +119,7 @@ function Navbar() {
                   >
                     {currentUser?.profileImage ? (
                       <img
-                        src={`http://localhost:8080${currentUser.profileImage}`}
+                        src={`${BACKEND_BASE_URL}${currentUser.profileImage}`}
                         alt={`${currentUser?.name || "User"} avatar`}
                         className="avatar-img"
                       />

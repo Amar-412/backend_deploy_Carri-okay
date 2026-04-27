@@ -5,6 +5,8 @@ import Card from '../components/Card';
 import { fetchWithAuth } from '../utils/fetchWithAuth';
 import './UserDashboard.css';
 
+const API_BASE = `${import.meta.env.VITE_API_BASE_URL}/api`;
+
 const getUserId = (user) => user?.id ?? user?.userId ?? user?.uid ?? null;
 
 const normalizeStringArray = (value) => {
@@ -39,7 +41,7 @@ function UserDashboard() {
   const [allResources, setAllResources] = useState([]);
 
   useEffect(() => {
-    fetchWithAuth('http://localhost:8080/api/careers', {}, token)
+    fetchWithAuth(`${API_BASE}/careers`, {}, token)
       .then(res => {
         if (res.status === 401) {
           logout();
@@ -53,7 +55,7 @@ function UserDashboard() {
       .then(data => setAllCareers(Array.isArray(data) ? data : []))
       .catch(() => setAllCareers([]));
 
-    fetchWithAuth('http://localhost:8080/api/resources', {}, token)
+    fetchWithAuth(`${API_BASE}/resources`, {}, token)
       .then(res => {
         if (res.status === 401) {
           logout();
@@ -71,7 +73,7 @@ function UserDashboard() {
   useEffect(() => {
     if (!currentUserId) return;
 
-    fetchWithAuth('http://localhost:8080/api/saved-careers', {}, token)
+    fetchWithAuth(`${API_BASE}/saved-careers`, {}, token)
       .then(res => {
         if (res.status === 401) {
           logout();
@@ -92,7 +94,7 @@ function UserDashboard() {
       })
       .catch(() => setSavedCareers([]));
 
-    fetchWithAuth('http://localhost:8080/api/saved-resources', {}, token)
+    fetchWithAuth(`${API_BASE}/saved-resources`, {}, token)
       .then(res => {
         if (res.status === 401) {
           logout();
@@ -113,7 +115,7 @@ function UserDashboard() {
       })
       .catch(() => setSavedResources([]));
 
-    fetchWithAuth('http://localhost:8080/api/bookings/me', {}, token)
+    fetchWithAuth(`${API_BASE}/bookings/me`, {}, token)
       .then(res => {
         if (res.status === 401) {
           logout();
@@ -127,7 +129,7 @@ function UserDashboard() {
       .then(data => setBookings(Array.isArray(data) ? data : []))
       .catch(() => setBookings([]));
 
-    fetchWithAuth('http://localhost:8080/api/quiz/me', {}, token)
+    fetchWithAuth(`${API_BASE}/quiz/me`, {}, token)
       .then(res => {
         if (res.status === 401) {
           logout();

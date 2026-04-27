@@ -7,6 +7,8 @@ import Card from '../components/Card';
 import { fetchWithAuth } from '../utils/fetchWithAuth';
 import './CareerDetail.css';
 
+const API_BASE = `${import.meta.env.VITE_API_BASE_URL}/api`;
+
 const getUserId = (user) => user?.id ?? user?.userId ?? user?.uid ?? null;
 
 const normalizeStringArray = (value) => {
@@ -41,7 +43,7 @@ function CareerDetail() {
       return;
     }
 
-    fetchWithAuth(`http://localhost:8080/api/careers/${id}`, {}, token)
+    fetchWithAuth(`${API_BASE}/careers/${id}`, {}, token)
       .then(res => {
         if (res.status === 401) {
           logout();
@@ -62,7 +64,7 @@ function CareerDetail() {
       return;
     }
 
-    fetchWithAuth('http://localhost:8080/api/saved-careers', {}, token)
+    fetchWithAuth(`${API_BASE}/saved-careers`, {}, token)
       .then(res => {
         if (res.status === 401) {
           logout();
@@ -95,7 +97,7 @@ function CareerDetail() {
     try {
       const method = isSaved(careerId) ? 'DELETE' : 'POST';
       const res = await fetchWithAuth(
-        `http://localhost:8080/api/saved-careers/${careerId}`,
+        `${API_BASE}/saved-careers/${careerId}`,
         { method },
         token
       );

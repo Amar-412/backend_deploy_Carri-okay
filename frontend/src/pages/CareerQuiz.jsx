@@ -7,6 +7,8 @@ import ProtectedBlur from '../components/ProtectedBlur';
 import { fetchWithAuth } from '../utils/fetchWithAuth';
 import './CareerQuiz.css';
 
+const API_BASE = `${import.meta.env.VITE_API_BASE_URL}/api`;
+
 const getUserId = (user) => user?.id ?? user?.userId ?? user?.uid ?? null;
 
 const normalizeStringArray = (value) => {
@@ -33,7 +35,7 @@ function CareerQuiz() {
   const currentUserId = getUserId(currentUser);
 
   useEffect(() => {
-    fetchWithAuth("http://localhost:8080/api/careers", {}, token)
+    fetchWithAuth(`${API_BASE}/careers`, {}, token)
       .then(res => {
         if (res.status === 401) {
           logout();
@@ -63,7 +65,7 @@ function CareerQuiz() {
       if (currentUserId && results.length > 0) {
         const careerIds = results.map(r => r.id);
 
-        fetchWithAuth("http://localhost:8080/api/quiz", {
+        fetchWithAuth(`${API_BASE}/quiz`, {
           method: "POST",
           body: JSON.stringify({
             careerIds: careerIds
