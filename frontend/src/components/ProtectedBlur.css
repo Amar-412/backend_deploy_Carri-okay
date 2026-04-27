@@ -1,0 +1,11 @@
+.protected-blur-root {
+  position: relative;
+  width: 100%;
+  min-height: 100%;
+}
+
+.protected-blur-locked {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
