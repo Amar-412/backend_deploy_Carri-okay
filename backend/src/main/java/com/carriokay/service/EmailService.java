@@ -1,33 +1,48 @@
 package com.carriokay.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
-import jakarta.mail.internet.MimeMessage;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class EmailService {
 
-	@Autowired
-    private JavaMailSender mailSender;
+    @Value("${BREVO_API_KEY}")
+    private String apiKey;
+
+    private final RestTemplate restTemplate = new RestTemplate();
 
     public void sendSimpleMail(String to, String subject, String text) {
         try {
-            System.out.println("Sending email to: " + to);
+            String url = "https://api.brevo.com/v3/smtp/email";
 
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, false);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.set("api-key", apiKey);
 
-            helper.setFrom("2400031412cse1@gmail.com"); 
-            helper.setTo(to);
-            helper.setSubject(subject);
-            helper.setText(text);
+            Map<String, Object> body = new HashMap<>();
 
-            mailSender.send(message);
+            Map<String, String> sender = new HashMap<>();
+            sender.put("email", "amar.sork@gmail.com");
+            sender.put("name", "CarriOkay");
 
-            System.out.println("Email sent successfully");
+            Map<String, String> toUser = new HashMap<>();
+            toUser.put("email", to);
+
+            body.put("sender", sender);
+            body.put("to", new Object[]{toUser});
+            body.put("subject", subject);
+            body.put("textContent", text);
+
+            HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
+
+            restTemplate.postForEntity(url, request, String.class);
+
+            System.out.println("Email sent via Brevo REST API");
 
         } catch (Exception e) {
             e.printStackTrace();
